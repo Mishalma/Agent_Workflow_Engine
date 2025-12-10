@@ -1,0 +1,37 @@
+{
+  "nodes": [
+    {
+      "name": "split",
+      "tool": "split_text"
+    },
+    {
+      "name": "summarize",
+      "tool": "generate_summaries"
+    },
+    {
+      "name": "merge",
+      "tool": "merge_summaries"
+    },
+    {
+      "name": "refine",
+      "tool": "refine_summary"
+    }
+  ],
+  "edges": {
+    "split": "summarize",
+    "summarize": "merge",
+    "merge": "refine"
+  },
+  "loops": [
+    {
+      "after": "refine",
+      "condition": {
+        "key": "length",
+        "op": "gt",
+        "value": 200
+      },
+      "back_to": "refine"
+    }
+  ],
+  "start": "split"
+}
