@@ -34,6 +34,40 @@ This executes a text summarization workflow: Split → Summarize → Merge → R
 
 ---
 
+
+## Architecture
+
+### System Overview
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    FastAPI Layer                        │
+│                     (main.py)                           │
+│                                                         │
+│  POST /graph/create  │  POST /graph/run  │  GET /state │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│                  Graph Engine Layer                     │
+│                 (graph_engine.py)                       │
+│                                                         │
+│  • Build graphs from JSON definitions                  │
+│  • Compile with LangGraph StateGraph                   │
+│  • Execute workflows with state management             │
+│  • Handle conditional routing & loops                  │
+│  • Checkpointing with MemorySaver                      │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│                   Tool Registry                         │
+│                    (tools.py)                           │
+│                                                         │
+│  split_text  │  generate_summaries  │  merge_summaries │
+└─────────────────────────────────────────────────────────┘
+```
+
 ## What the Engine Supports
 
 ### Core Features
